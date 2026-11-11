@@ -24,6 +24,9 @@ const tempColorChange = () => {
   const tempFont = document.getElementById('tempValue');
 
   let colorInd = Math.floor(state.temperature / 10) * 10;
+  if (colorInd < 50) {
+    colorInd = 0;
+  }
   tempFont.classList.remove(...Object.values(tempClasses));
   tempFont.classList.add(tempClasses[colorInd]);
 };
