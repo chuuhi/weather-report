@@ -1,38 +1,29 @@
 const state = {
   temperature: 70,
 };
+
 const updateTemperature = () => {
   const tempValue = document.getElementById('tempValue');
   tempValue.textContent = state.temperature;
 };
 
+const tempUp = document.getElementById('increaseTempControl');
 const tempDown = document.getElementById('decreaseTempControl');
 
-const tempUp = document.getElementById('increaseTempControl');
+const tempColorChange = () => {
+  const tempClasses = {
+    0: 'teal',
+    50: 'green',
+    60: 'yellow',
+    70: 'orange',
+    80: 'red',
+  };
 
-// const tempValue = document.getElementById('tempValue');
-
-const tempColorChange = (event) => {
-  const colorClasses = ['red', 'orange', 'yellow', 'green', 'teal'];
   const tempFont = document.getElementById('tempValue');
 
-  if (state.temperature >= 80) {
-    tempFont.classList.remove(...colorClasses);
-    tempFont.classList.add('red');
-  } else if (state.temperature >= 70 && state.temperature < 80) {
-    tempFont.classList.remove(...colorClasses);
-    console.log(tempFont);
-    tempFont.classList.add('orange');
-  } else if (state.temperature >= 60 && state.temperature < 70) {
-    tempFont.classList.remove(...colorClasses);
-    tempFont.classList.add('yellow');
-  } else if (state.temperature >= 50 && state.temperature < 60) {
-    tempFont.classList.remove(...colorClasses);
-    tempFont.classList.add('green');
-  } else if (state.temperature < 50) {
-    tempFont.classList.remove(...colorClasses);
-    tempFont.classList.add('teal');
-  }
+  let colorInd = Math.floor(state.temperature / 10) * 10;
+  tempFont.classList.remove(...Object.values(tempClasses));
+  tempFont.classList.add(tempClasses[colorInd]);
 };
 
 const changeLandscape = () => {
@@ -52,22 +43,18 @@ const registerEventHandlers = () => {
   tempUp.addEventListener('click', () => {
     state.temperature += 1;
     updateTemperature();
+    tempColorChange();
     changeLandscape();
   });
   tempDown.addEventListener('click', () => {
     state.temperature -= 1;
     updateTemperature();
+    tempColorChange();
     changeLandscape();
-  });
-//   tempValue.addEventListener('click', tempColorChange);
-  tempUp.addEventListener('click', () => {
-    tempColorChange();
-  });
-  tempDown.addEventListener('click', () => {
-    tempColorChange();
   });
 };
 
 changeLandscape();
+tempColorChange();
 
-document.addEventListener("DOMContentLoaded", registerEventHandlers);
+document.addEventListener('DOMContentLoaded', registerEventHandlers);
