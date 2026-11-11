@@ -1,3 +1,5 @@
+'use strict';
+
 const state = {
   temperature: 70,
 };
