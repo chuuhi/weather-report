@@ -5,10 +5,10 @@ const state = {
 };
 
 const updateTemperature = () => {
-  const tempValue = document.getElementById('tempValue');
   tempValue.textContent = state.temperature;
 };
 
+const tempValue = document.getElementById('tempValue');
 const tempUp = document.getElementById('increaseTempControl');
 const tempDown = document.getElementById('decreaseTempControl');
 const cityNameInput = document.getElementById('cityNameInput');
@@ -25,14 +25,12 @@ const tempColorChange = () => {
     80: 'red',
   };
 
-  const tempFont = document.getElementById('tempValue');
-
   let colorInd = Math.floor(state.temperature / 10) * 10;
   if (colorInd < 50) {
     colorInd = 0;
   }
-  tempFont.classList.remove(...Object.values(tempClasses));
-  tempFont.classList.add(tempClasses[colorInd]);
+  tempValue.classList.remove(...Object.values(tempClasses));
+  tempValue.classList.add(tempClasses[colorInd]);
 };
 
 const changeLandscape = () => {
@@ -83,16 +81,12 @@ const registerEventHandlers = () => {
   currentTempButton.addEventListener('click', () => {
     tempApiCall();
   });
-
 };
 
 changeLandscape();
 tempColorChange();
 
 document.addEventListener('DOMContentLoaded', registerEventHandlers);
-
-
-// const axios = require('axios');
 
 const findLatitudeAndLongitude = async (query) => {
   // Return the promise chain created by the axios call
