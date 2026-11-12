@@ -11,6 +11,9 @@ const updateTemperature = () => {
 
 const tempUp = document.getElementById('increaseTempControl');
 const tempDown = document.getElementById('decreaseTempControl');
+const cityNameInput = document.getElementById('cityNameInput');
+const cityNameDisplay = document.getElementById('headerCityName');
+const cityNameButton = document.getElementById('cityNameReset');
 
 const tempColorChange = () => {
   const tempClasses = {
@@ -44,6 +47,15 @@ const changeLandscape = () => {
   }
 };
 
+const updateCityName = () => {
+  cityNameDisplay.textContent = cityNameInput.value;
+};
+
+const resetCityName = () => {
+  cityNameDisplay.textContent = 'Seattle';
+  cityNameInput.value = 'Seattle';
+};
+
 const registerEventHandlers = () => {
   tempUp.addEventListener('click', () => {
     state.temperature += 1;
@@ -57,6 +69,13 @@ const registerEventHandlers = () => {
     tempColorChange();
     changeLandscape();
   });
+  cityNameInput.addEventListener('input', () => {
+    updateCityName();
+  });
+  cityNameButton.addEventListener('click', () => {
+    resetCityName();
+  });
+
 };
 
 changeLandscape();
