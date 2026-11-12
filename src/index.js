@@ -55,8 +55,11 @@ const resetCityName = () => {
   cityNameInput.value = 'Seattle';
 };
 
-const tempApiCall = () => {
-  getWeatherByLocation('47.6062', '122.3321');
+const tempApiCall = async () => {
+  const apiTemp = await getWeather(cityNameInput.value);
+  state.temperature = convertKtoF(apiTemp.temp);
+  updateTemperature();
+  tempColorChange();
 };
 
 const registerEventHandlers = () => {
@@ -101,18 +104,13 @@ const findLatitudeAndLongitude = async (query) => {
       },
     );
 
-    const latitude = response.data[0].lat;
-    const longitude = response.data[0].lon;
-    const displayName = response.data[0].display_name;
+    const lat = response.data[0].lat;
+    const lon = response.data[0].lon;
+    const city = response.data[0].display_name;
 
-    console.log(
-      'success in findLatitudeAndLongitude!',
-      latitude,
-      longitude,
-      displayName,
-    );
+    console.log('success in findLatitudeAndLongitude!', lat, lon);
 
-    return { latitude, longitude, displayName }; // Return the data we want to pass on
+    return { lat, lon, city }; // Return the data we want to pass on
   } catch (error) {
     console.log('error in findLatitudeAndLongitude!');
     throw error;
@@ -133,40 +131,23 @@ const getWeatherByLocation = async (lat, lon) => {
       },
     );
 
-    // const latitude = response.data[0].lat;
-    // const longitude = response.data[0].lon;
-    // const displayName = response.data[0].display_name;
+    const temp = response.data.main.temp;
+    console.log('success in getWeatherByLocation!', temp);
 
-    console.log(
-      'success in getWeatherByLocation!',
-      lat,
-      lon,
-      displayName,
-    );
-
-    // return { latitude, longitude, displayName }; // Return the data we want to pass on
+    return { temp };
   } catch (error) {
-    console.log('error in findLatitudeAndLongitude!');
+    console.log('error in getWeatherByLocation!');
     throw error;
     // console.log(error); // If we want to see more info about the issue
   }
 };
 
-// getWeatherByLocation('Seattle');
-getWeatherByLocation('47.6062', '122.3321');
-
-/*
-const getLocationFromQuery = async (query) => {
-  // Make the first API call to get latitude and longitude
+const getWeather = async (query) => {
   try {
-    const coordinates = await findLatitudeAndLongitude(query);
-    // return wait(1000).then(() => {
-    // `coordinates` is the data returned from the findLatitudeAndLongitude promise
-
-    return await getWeatherByLocation(coordinates.latitude, coordinates.longitude);
-    // });
+    const coord = await findLatitudeAndLongitude(query);
+    return await getWeatherByLocation(coord.lat, coord.lon);
   } catch (error) {
-    console.log('getLocationFromQuery: error fetching location from query!');
+    console.log('getWeather: error fetching weather from query!');
     throw error;
     // console.log(error); // If we want to see more info about the issue
   }
