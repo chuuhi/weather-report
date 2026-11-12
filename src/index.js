@@ -60,6 +60,7 @@ const tempApiCall = async () => {
   state.temperature = convertKtoF(apiTemp.temp);
   updateTemperature();
   tempColorChange();
+  changeLandscape();
 };
 
 const registerEventHandlers = () => {
